@@ -12,7 +12,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #fff0f0; /* Soft blush background */
+            background-color: #fff0f0;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             overflow: hidden;
             touch-action: manipulation;
@@ -21,11 +21,12 @@
         .card {
             text-align: center;
             background: white;
-            padding: 30px;
+            padding: 40px;
             border-radius: 24px;
             box-shadow: 0 15px 35px rgba(255, 100, 100, 0.15);
             width: 85%;
             max-width: 400px;
+            position: relative;
         }
 
         h1 {
@@ -38,8 +39,9 @@
         .btn-container {
             display: flex;
             justify-content: center;
+            align-items: center;
             gap: 20px;
-            height: 60px;
+            min-height: 50px;
         }
 
         .btn {
@@ -49,7 +51,8 @@
             border: none;
             border-radius: 12px;
             cursor: pointer;
-            transition: transform 0.2s ease;
+            transition: transform 0.1s ease;
+            display: inline-block;
         }
 
         #yesBtn {
@@ -57,10 +60,11 @@
             color: white;
         }
 
+        /* Fixed: No absolute position at start */
         #noBtn {
             background-color: #f0f0f0;
             color: #555;
-            position: absolute; /* This allows it to move around the screen */
+            position: relative; 
             z-index: 999;
         }
     </style>
@@ -79,10 +83,15 @@
         function moveButton() {
             const noBtn = document.getElementById('noBtn');
             
-            // Calculate random coordinates
-            // Subtracting 100 to keep the button within viewable screen area
-            const x = Math.random() * (window.innerWidth - 100);
-            const y = Math.random() * (window.innerHeight - 50);
+            // The first time she interacts, we switch it to absolute
+            if (noBtn.style.position !== 'absolute') {
+                noBtn.style.position = 'absolute';
+            }
+
+            // Calculate random coordinates 
+            // We use 150/100 as buffers to keep it from going off-screen
+            const x = Math.random() * (window.innerWidth - 150);
+            const y = Math.random() * (window.innerHeight - 100);
 
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
@@ -97,12 +106,11 @@
                 </head>
                 <body style="background-color: #ff4d6d; color: white; display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: sans-serif; text-align: center;">
                     <h1 style="font-size: 3rem;">thankyou baby! 💖</h1>
-                    <p style="font-size: 1.5rem;">I knew you'd say yes!</p>
+                    <p style="font-size: 1.5rem;">Best decision ever!</p>
                 </body>
                 </html>
             `;
             
-            // Open in new tab
             const win = window.open("", "_blank");
             win.document.write(thankYouPage);
             win.document.close();
